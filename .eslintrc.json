@@ -33,6 +33,8 @@
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "no-use-before-define": "off",
+        "react/require-default-props": "off",
+        "react/destructuring-assignment": "off",
         "import/extensions": [
           "error",
           "ignorePackages",

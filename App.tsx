@@ -26,8 +26,8 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <SafeAreaProvider>
+        <StatusBar translucent={false} style="auto" backgroundColor="white" />
         <Navigation colorScheme={colorScheme} />
-        <StatusBar />
       </SafeAreaProvider>
     </PaperProvider>
   );

@@ -15,10 +15,6 @@ export function ScreenContainer({ children }: ScreenContainerProps) {
           backgroundColor: 'white',
         },
       ]}
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}
     >
       {children}
     </ScrollView>
