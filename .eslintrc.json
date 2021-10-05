@@ -35,6 +35,8 @@
         "no-use-before-define": "off",
         "react/require-default-props": "off",
         "react/destructuring-assignment": "off",
+        "object-shorthand": "off",
+        "no-shadow": "off",
         "import/extensions": [
           "error",
           "ignorePackages",
