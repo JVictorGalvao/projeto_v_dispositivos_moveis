@@ -27,7 +27,7 @@ export default function RegisterScreen({
           password: senha,
           data_nascimento: dataNasc,
         })
-        .then((response) => console.log(response.data))
+        // .then((response) => console.log(response.data))
         .then(() => navigation.navigate('Login'));
     }
   };

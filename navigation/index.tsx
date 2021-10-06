@@ -11,6 +11,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
+import HomeScreen from '../screens/HomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ModalScreen from '../screens/ModalScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -45,6 +46,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Registro"
         component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

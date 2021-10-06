@@ -1,20 +1,46 @@
-import React from 'react';
-import { Button, TextInput } from 'react-native-paper';
+import React, { useState } from 'react';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { Separator } from '../components/Separator';
+import api from '../service/api';
 import { RootStackScreenProps } from '../types';
 
 export default function LoginScreen({
   navigation,
 }: RootStackScreenProps<'Login'>) {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState(false);
+
+  const login = () => {
+    api.post('/login', { email: email, password: senha }).then(
+      () => navigation.navigate('Home'),
+      () => setErro(true)
+    );
+  };
   return (
     <ScreenContainer>
       <Separator vertical size={256} />
-      <TextInput label="Email" mode="outlined" />
+      <TextInput
+        label="Email"
+        mode="outlined"
+        value={email}
+        onChangeText={(email) => setEmail(email)}
+      />
       <Separator vertical size={8} />
-      <TextInput label="Senha" mode="outlined" />
+      <TextInput
+        label="Senha"
+        mode="outlined"
+        secureTextEntry
+        value={senha}
+        onChangeText={(senha) => setSenha(senha)}
+      />
+      <HelperText type="error" visible={erro}>
+        Usuário ou senha incorretos.
+      </HelperText>
       <Separator vertical size={32} />
-      <Button mode="contained" onPress={() => console.log('Pressed')}>
+
+      <Button mode="contained" onPress={() => login()}>
         Login
       </Button>
       <Separator vertical size={64} />
