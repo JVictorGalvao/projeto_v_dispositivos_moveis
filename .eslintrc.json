@@ -37,6 +37,7 @@
         "react/destructuring-assignment": "off",
         "object-shorthand": "off",
         "no-shadow": "off",
+        "camelcase": "off",
         "import/extensions": [
           "error",
           "ignorePackages",
