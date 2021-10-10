@@ -131,7 +131,13 @@ export default function AgendamentoScreen({
         dose: selectedDose,
         status: 'AGENDADO',
       })
-      .then(() => navigation.navigate('Agendamentos', { tela: true }));
+      .then(() =>
+        navigation.navigate('Agendamentos', {
+          tela: true,
+          id: route.params.id,
+          grupos_id: route.params.grupo_atendimento_id,
+        })
+      );
   };
   return (
     <>

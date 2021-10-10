@@ -80,7 +80,13 @@ export default function HomeScreen({
       </Card>
       <Separator vertical size={36} />
       <Card
-        onPress={() => navigation.navigate('Agendamentos', { tela: false })}
+        onPress={() =>
+          navigation.navigate('Agendamentos', {
+            tela: false,
+            id: route.params.id,
+            grupos_id: grupos?.id,
+          })
+        }
       >
         <Card.Title title="Meus agendamentos" />
       </Card>

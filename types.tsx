@@ -29,7 +29,7 @@ export type RootStackParamList = {
     grupo_atendimento_nome: string | undefined;
     idade: number;
   };
-  Agendamentos: { tela?: boolean };
+  Agendamentos: { tela?: boolean; id: number; grupos_id?: number | undefined };
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
