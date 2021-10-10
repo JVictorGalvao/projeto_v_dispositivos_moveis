@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
 /* eslint no-console: "off" */
 import * as Location from 'expo-location';
@@ -94,8 +96,9 @@ export default function LocalizacaoScreen({
         <Appbar.Content title="Locais de vacinação" />
       </Appbar.Header>
       <ScreenContainer>
-        {estabelecimentos.map((estab) => (
+        {estabelecimentos.map((estab, index) => (
           <List.Item
+            key={index.toString()}
             title={estab.nom_estab}
             descriptionNumberOfLines={2}
             description={`${

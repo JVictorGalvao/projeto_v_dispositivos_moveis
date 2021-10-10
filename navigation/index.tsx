@@ -6,11 +6,13 @@
 import {
   DarkTheme,
   DefaultTheme,
+  // eslint-disable-next-line prettier/prettier
   NavigationContainer
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
+import AgendamentoScreen from '../screens/AgendamentoScreen';
 import HomeScreen from '../screens/HomeSceen';
 import LocalizacaoScreen from '../screens/LocalizacaoScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -50,13 +52,18 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Localizacao"
-        component={LocalizacaoScreen}
+        name="Home"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Agendamento"
+        component={AgendamentoScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Localizacao"
+        component={LocalizacaoScreen}
         options={{ headerShown: false }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

@@ -1,4 +1,5 @@
-import { useRoute } from '@react-navigation/native';
+/* eslint-disable no-else-return */
+import { RouteProp, useRoute } from '@react-navigation/native';
 // eslint-disable-next-line import/no-duplicates
 import { formatDistanceToNowStrict } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
@@ -14,30 +15,36 @@ interface IGrupos {
   nome: string;
   idade_minima: number;
 }
+type IRotas = {
+  Home: {
+    nome: string;
+    dataNasc: string;
+    email: string;
+  };
+};
 
 export default function HomeScreen({
   navigation,
 }: RootStackScreenProps<'Home'>) {
-  const route = useRoute();
+  const route = useRoute<RouteProp<IRotas, 'Home'>>();
   const nascimento = new Date(route.params.dataNasc);
   const idade = formatDistanceToNowStrict(nascimento, {
     locale: ptBR,
     addSuffix: false,
   });
   const idadeGrupo = parseInt(idade.replace(/[^0-9]/g, ''), 10);
-  //   const idadeGrupo = 44;
   const [grupos, setGrupos] = useState<IGrupos[]>([]);
 
   useEffect(() => {
-    api
-      .get('/grupos-atendimentos')
-      .then((response) => setGrupos(response.data));
-  }, []);
-
-  const grupoAtendimento = grupos.filter(
-    (elem) => elem.idade_minima <= idadeGrupo
-  );
-
+    (async () => {
+      const grupos = await api
+        .get('/grupos-atendimentos')
+        .then((response) =>
+          response.data.filter((elem) => elem.idade_minima <= idadeGrupo)
+        );
+      await setGrupos(grupos[0].nome);
+    })();
+  }, [idadeGrupo]);
   return (
     <ScreenContainer>
       <Card elevation={0}>
@@ -47,7 +54,7 @@ export default function HomeScreen({
           <Title>{`Idade: ${idade}`}</Title>
           <Title
             style={{ fontSize: 18 }}
-          >{`Grupo de atendimento: ${grupoAtendimento[0].nome}`}</Title>
+          >{`Grupo de atendimento: ${grupos}`}</Title>
           <Separator vertical size={8} />
           <Divider />
         </Card.Content>
@@ -57,7 +64,7 @@ export default function HomeScreen({
         <Card.Title title="Postos de vacinação próximos" />
       </Card>
       <Separator vertical size={36} />
-      <Card onPress={() => navigation.navigate('Localizacao')}>
+      <Card onPress={() => navigation.navigate('Agendamento')}>
         <Card.Title title="Agendamento" />
       </Card>
     </ScreenContainer>

@@ -1,3 +1,4 @@
+/* eslint-disable react/style-prop-object */
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
