@@ -29,14 +29,19 @@ export default function HomeScreen({
   navigation,
 }: RootStackScreenProps<'Home'>) {
   const route = useRoute<RouteProp<IRotas, 'Home'>>();
-  const nascimento = new Date(route.params.dataNasc);
+  function toDate(dateStr) {
+    const parts = dateStr.split('/');
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+  }
+  const pattern = /(\d{2})\.(\d{2})\.(\d{4})/;
+  const nascimento = toDate(route.params.dataNasc);
   const idade = formatDistanceToNowStrict(nascimento, {
     locale: ptBR,
-    addSuffix: false,
   });
   const idadeGrupo = parseInt(idade.replace(/[^0-9]/g, ''), 10);
   const [grupos, setGrupos] = useState<IGrupos>();
 
+  console.log(Date.parse('1997-07-20'));
   useEffect(() => {
     (async () => {
       const grupos = await api

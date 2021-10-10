@@ -47,7 +47,7 @@ export default function AgendamentoScreen({
   navigation,
 }: RootStackScreenProps<'Agendamento'>) {
   const route = useRoute<RouteProp<IRota, 'Agendamento'>>();
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [location, setLocation] = useState<ILocation>();
