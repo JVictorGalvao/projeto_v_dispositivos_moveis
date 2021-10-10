@@ -14,7 +14,12 @@ export default function LoginScreen({
 
   const login = () => {
     api.post('/login', { email: email, password: senha }).then(
-      () => navigation.navigate('Home'),
+      (response) =>
+        navigation.navigate('Home', {
+          nome: response.data.user.nome,
+          dataNasc: response.data.user.data_nascimento,
+          email: response.data.user.email,
+        }),
       () => setErro(true)
     );
   };

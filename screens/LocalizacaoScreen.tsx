@@ -1,10 +1,10 @@
+/* eslint-disable no-return-assign */
 /* eslint no-console: "off" */
-import { Picker } from '@react-native-picker/picker';
 import * as Location from 'expo-location';
+import haversineDistance from 'haversine-distance';
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Appbar, List } from 'react-native-paper';
 import { ScreenContainer } from '../components/ScreenContainer';
-import { Separator } from '../components/Separator';
 import api from '../service/api';
 import { RootStackScreenProps } from '../types';
 
@@ -28,11 +28,12 @@ interface IEstabelecimentos {
   nom_estab: string;
   vlr_latitude: number;
   vlr_longitude: number;
+  distancia: number;
 }
 
-export default function HomeScreen({
+export default function LocalizacaoScreen({
   navigation,
-}: RootStackScreenProps<'Home'>) {
+}: RootStackScreenProps<'Localizacao'>) {
   const [location, setLocation] = useState<ILocation>();
   const [errorMsg, setErrorMsg] = useState('');
   const [latitude, setLatitude] = useState<number>();
@@ -41,7 +42,6 @@ export default function HomeScreen({
   const [estabelecimentos, setEstabelecimentos] = useState<IEstabelecimentos[]>(
     []
   );
-  const [selectedLanguage, setSelectedLanguage] = useState();
 
   useEffect(() => {
     (async () => {
@@ -63,45 +63,48 @@ export default function HomeScreen({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-      // console.log(place);
       place.map((place) => setCity(place.subregion));
     })();
   }, []);
-
   useEffect(() => {
     api
       .get(`/estabelecimentos-saude?dsc_cidade=${city}`)
       .then((response) => setEstabelecimentos(response.data));
   }, [city]);
 
-  let text = 'Waiting..';
-  console.log(location);
-  // console.log(estabelecimentos);
-  estabelecimentos.sort(() => {});
-
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location.coords);
-  }
+  // adiciona a distancia no objeto estabelecimentos
+  estabelecimentos.forEach(
+    (estab) =>
+      (estab.distancia = haversineDistance(
+        { latitude: latitude, longitude: longitude },
+        { latitude: estab.vlr_latitude, longitude: estab.vlr_longitude }
+      ))
+  );
+  // organiza os estabelecimentos por distancia
+  estabelecimentos.sort((a, b) => a.distancia - b.distancia);
 
   return (
-    <ScreenContainer>
-      <Separator vertical size={256} />
-
-      <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-      >
+    <>
+      <Appbar.Header statusBarHeight={0}>
+        <Appbar.BackAction
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <Appbar.Content title="Locais de vacinação" />
+      </Appbar.Header>
+      <ScreenContainer>
         {estabelecimentos.map((estab) => (
-          <Picker.Item label={estab.nom_estab} />
+          <List.Item
+            title={estab.nom_estab}
+            descriptionNumberOfLines={2}
+            description={`${
+              estab.dsc_endereco
+            } \nDistância: ${estab.distancia.toFixed(2)} metros`}
+            left={() => <List.Icon icon="map-marker-radius-outline" />}
+          />
         ))}
-      </Picker>
-
-      <Text>{text}</Text>
-      <Text>{latitude}</Text>
-      <Text>{longitude}</Text>
-      <Text>{city}</Text>
-    </ScreenContainer>
+      </ScreenContainer>
+    </>
   );
 }

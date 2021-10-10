@@ -11,7 +11,8 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeSceen';
+import LocalizacaoScreen from '../screens/LocalizacaoScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ModalScreen from '../screens/ModalScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -37,7 +38,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -46,6 +47,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Registro"
         component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Localizacao"
+        component={LocalizacaoScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
