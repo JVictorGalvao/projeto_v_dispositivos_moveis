@@ -109,7 +109,7 @@ export default function AgendamentosScreen({
             <Card key={index.toString()}>
               <Card.Content key={index.toString()}>
                 <Title>{usuario?.nome}</Title>
-                <Paragraph>{`Local: ${local[index].nom_estab}`}</Paragraph>
+                <Paragraph>{`Local: ${local[index]?.nom_estab}`}</Paragraph>
                 <Paragraph>{`Grupo de atendimento: ${grupo?.nome}`}</Paragraph>
                 <Paragraph>{`DOSE: ${agend.dose}`}</Paragraph>
                 <Title>{agend.status}</Title>

@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import haversineDistance from 'haversine-distance';
 import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { Appbar, Button, Text, TextInput } from 'react-native-paper';
+import { Appbar, Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { Separator } from '../components/Separator';
 import api from '../service/api';
@@ -60,6 +60,10 @@ export default function AgendamentoScreen({
   );
   const [selectedEstabelec, setSelectedEstabelec] = useState();
   const [selectedDose, setSelectedDose] = useState();
+  const [agendado, setAgendado] = useState(false);
+  const [check, setCheck] = useState([]);
+  const [error, setError] = useState<boolean>(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -139,6 +143,27 @@ export default function AgendamentoScreen({
         })
       );
   };
+
+  useEffect(() => {
+    api
+      .get(`/agendamentos`)
+      .then((response) =>
+        setCheck(
+          response.data.filter((elem) => elem.usuario_id === route.params.id)
+        )
+      );
+  }, [route.params.id]);
+
+  const checaAgendamento = () => {
+    const verifica = check.map((agend) => agend.status === 'AGENDADO');
+    const teste = verifica.some((a) => a === true);
+    if (teste === true) {
+      setError(true);
+    } else {
+      setAgendado(true);
+    }
+  };
+  const hideDialog = () => setError(false);
   return (
     <>
       <Appbar.Header statusBarHeight={0}>
@@ -193,7 +218,6 @@ export default function AgendamentoScreen({
           ))}
         </Picker>
         <Separator vertical size={32} />
-        <Text> {selectedDose}</Text>
         <Picker
           selectedValue={selectedDose}
           onValueChange={(itemValue, itemIndex) => setSelectedDose(itemValue)}
@@ -203,11 +227,22 @@ export default function AgendamentoScreen({
           <Picker.Item label="Dose de reforço" value="REFORÇO" />
           <Picker.Item label="Dose única" value="ÚNICA" />
         </Picker>
-        <Text> {selectedDose}</Text>
         <Separator vertical size={64} />
-        <Button mode="contained" onPress={() => agendar()}>
+        <Button
+          mode="contained"
+          onPress={() => (agendado ? agendar() : checaAgendamento())}
+        >
           Agendar
         </Button>
+        <Portal>
+          <Dialog visible={error} onDismiss={hideDialog}>
+            <Dialog.Title>Você já tem um agendamento</Dialog.Title>
+
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Ok</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
