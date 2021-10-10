@@ -12,11 +12,13 @@ import api from '../service/api';
 import { RootStackScreenProps } from '../types';
 
 interface IGrupos {
+  id: number;
   nome: string;
   idade_minima: number;
 }
 type IRotas = {
   Home: {
+    id: number;
     nome: string;
     dataNasc: string;
     email: string;
@@ -33,7 +35,7 @@ export default function HomeScreen({
     addSuffix: false,
   });
   const idadeGrupo = parseInt(idade.replace(/[^0-9]/g, ''), 10);
-  const [grupos, setGrupos] = useState<IGrupos[]>([]);
+  const [grupos, setGrupos] = useState<IGrupos>();
 
   useEffect(() => {
     (async () => {
@@ -42,7 +44,7 @@ export default function HomeScreen({
         .then((response) =>
           response.data.filter((elem) => elem.idade_minima <= idadeGrupo)
         );
-      await setGrupos(grupos[0].nome);
+      await setGrupos(grupos[0]);
     })();
   }, [idadeGrupo]);
   return (
@@ -54,7 +56,7 @@ export default function HomeScreen({
           <Title>{`Idade: ${idade}`}</Title>
           <Title
             style={{ fontSize: 18 }}
-          >{`Grupo de atendimento: ${grupos}`}</Title>
+          >{`Grupo de atendimento: ${grupos?.nome}`}</Title>
           <Separator vertical size={8} />
           <Divider />
         </Card.Content>
@@ -64,8 +66,21 @@ export default function HomeScreen({
         <Card.Title title="Postos de vacinação próximos" />
       </Card>
       <Separator vertical size={36} />
-      <Card onPress={() => navigation.navigate('Agendamento')}>
-        <Card.Title title="Agendamento" />
+      <Card
+        onPress={() =>
+          navigation.navigate('Agendamento', {
+            id: route.params.id,
+            grupo_atendimento_id: grupos?.id,
+            grupo_atendimento_nome: grupos?.nome,
+            idade: idadeGrupo,
+          })
+        }
+      >
+        <Card.Title title="Marcar agendamento" />
+      </Card>
+      <Separator vertical size={36} />
+      <Card onPress={() => {}}>
+        <Card.Title title="Meus agendamentos" />
       </Card>
     </ScreenContainer>
   );

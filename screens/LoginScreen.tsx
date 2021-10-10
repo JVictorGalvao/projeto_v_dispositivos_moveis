@@ -16,6 +16,7 @@ export default function LoginScreen({
     api.post('/login', { email: email, password: senha }).then(
       (response) =>
         navigation.navigate('Home', {
+          id: response.data.user.id,
           nome: response.data.user.nome,
           dataNasc: response.data.user.data_nascimento,
           email: response.data.user.email,
