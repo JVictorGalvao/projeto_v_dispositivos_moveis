@@ -21,7 +21,7 @@ declare global {
 export type RootStackParamList = {
   Login: undefined;
   Registro: undefined;
-  Home: { id: number; nome: string; dataNasc: string; email: string };
+  Home?: { id: number; nome: string; dataNasc: string; email: string };
   Localizacao: undefined;
   Agendamento: {
     id: number;
@@ -29,6 +29,7 @@ export type RootStackParamList = {
     grupo_atendimento_nome: string | undefined;
     idade: number;
   };
+  Agendamentos: { tela?: boolean };
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;

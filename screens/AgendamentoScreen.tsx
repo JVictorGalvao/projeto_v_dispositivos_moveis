@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import haversineDistance from 'haversine-distance';
 import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { Appbar, Button, TextInput } from 'react-native-paper';
+import { Appbar, Button, Text, TextInput } from 'react-native-paper';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { Separator } from '../components/Separator';
 import api from '../service/api';
@@ -119,6 +119,20 @@ export default function AgendamentoScreen({
   const showTimepicker = () => {
     showMode('time');
   };
+
+  const agendar = () => {
+    api
+      .post('/agendamentos', {
+        usuario_id: route.params.id,
+        grupo_atendimento_id: route.params.grupo_atendimento_id,
+        estabelecimento_cnes: selectedEstabelec,
+        data: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+        hora: `${date.getHours()}:${date.getMinutes()}`,
+        dose: selectedDose,
+        status: 'AGENDADO',
+      })
+      .then(() => navigation.navigate('Agendamentos', { tela: true }));
+  };
   return (
     <>
       <Appbar.Header statusBarHeight={0}>
@@ -157,7 +171,7 @@ export default function AgendamentoScreen({
           }}
           value={`${date.getHours()}:${date.getMinutes()}`}
         />
-        <Separator vertical size={24} />
+        <Separator vertical size={32} />
         <Picker
           selectedValue={selectedEstabelec}
           onValueChange={(itemValue, itemIndex) =>
@@ -165,10 +179,15 @@ export default function AgendamentoScreen({
           }
         >
           {estabelecimentos.map((estab, index) => (
-            <Picker.Item label={estab.nom_estab} value={estab.cod_cnes} />
+            <Picker.Item
+              key={index.toString()}
+              label={estab.nom_estab}
+              value={estab.cod_cnes}
+            />
           ))}
         </Picker>
-        <Separator vertical size={24} />
+        <Separator vertical size={32} />
+        <Text> {selectedDose}</Text>
         <Picker
           selectedValue={selectedDose}
           onValueChange={(itemValue, itemIndex) => setSelectedDose(itemValue)}
@@ -178,8 +197,9 @@ export default function AgendamentoScreen({
           <Picker.Item label="Dose de reforço" value="REFORÇO" />
           <Picker.Item label="Dose única" value="ÚNICA" />
         </Picker>
+        <Text> {selectedDose}</Text>
         <Separator vertical size={64} />
-        <Button mode="contained" onPress={() => {}}>
+        <Button mode="contained" onPress={() => agendar()}>
           Agendar
         </Button>
         {show && (

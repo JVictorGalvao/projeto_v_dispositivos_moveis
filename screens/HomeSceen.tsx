@@ -79,7 +79,9 @@ export default function HomeScreen({
         <Card.Title title="Marcar agendamento" />
       </Card>
       <Separator vertical size={36} />
-      <Card onPress={() => {}}>
+      <Card
+        onPress={() => navigation.navigate('Agendamentos', { tela: false })}
+      >
         <Card.Title title="Meus agendamentos" />
       </Card>
     </ScreenContainer>

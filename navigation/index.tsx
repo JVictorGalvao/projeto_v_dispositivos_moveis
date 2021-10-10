@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import AgendamentoScreen from '../screens/AgendamentoScreen';
+import AgendamentosScreen from '../screens/AgendamentosScreen';
 import HomeScreen from '../screens/HomeSceen';
 import LocalizacaoScreen from '../screens/LocalizacaoScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -64,6 +65,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Localizacao"
         component={LocalizacaoScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Agendamentos"
+        component={AgendamentosScreen}
         options={{ headerShown: false }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
