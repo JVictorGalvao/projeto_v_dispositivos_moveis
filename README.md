@@ -10,9 +10,6 @@ acompanhar a transparência dos agendamentos realizados.
 # Índice
 + [Configurando o ambiente](#configuracao)
 + [Aplicativo](#aplicativo)
-    - [Rota do Neurologista](#neurologista)
-    - [Rota do Cuidador](#cuidador)
-+ [Melhorias e ideias](#melhorias)
 
 <h1 id="configuracao">Configurando o ambiente</h2>
 
